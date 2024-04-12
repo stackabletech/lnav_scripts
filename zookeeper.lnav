@@ -57,5 +57,5 @@ WHERE
 
 ;SELECT log_time, log_comment from all_logs where log_comment != ''
 
-    :switch-to-view db
+:switch-to-view db
 
