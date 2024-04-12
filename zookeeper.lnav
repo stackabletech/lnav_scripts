@@ -1,0 +1,61 @@
+;UPDATE all_logs SET log_comment =
+  'Startup - broker: ' || regexp_match('.*myid:([0-9]+).*', log_body)
+WHERE
+  log_text LIKE '%initlimit SET to %'
+
+;UPDATE all_logs SET log_comment =
+  'Broker ' || regexp_match('.*myid=([0-9]+).*', log_body) ||
+  ' not connecting to ' || regexp_match('.*--> sid:([0-9]+).*', log_body) ||
+  ' due to smaller identifier'
+WHERE
+  log_text LIKE '%Have smaller server identifier%' AND $1 > 2
+
+;UPDATE all_logs SET log_comment =
+  'Broker ' || regexp_match('.*myid=([0-9]+).*', log_body) ||
+  ' failed to verify host address ' || regexp_match('.*Failed to verify host address:(.*)', log_body)
+WHERE
+  log_text LIKE '%Failed to verify host address:%' AND $1 > 1
+
+;UPDATE all_logs SET log_comment =
+  'Broker ' || regexp_match('.*myid=([0-9]+).*', log_body) ||
+  ' failed to verify host name ' || regexp_match('.*Failed to verify hostname: (.*)', log_body)
+WHERE
+  log_text LIKE '%Failed to verify hostname:%' AND $1 > 1
+
+;UPDATE all_logs SET log_comment =
+  'Broker ' || regexp_match('.*myid=([0-9]+).*', log_body) ||
+  ' completed SSL handshake with ' || regexp_match('.*SSL handshake complete with (.*)', log_body)
+WHERE
+  log_text LIKE '%SSL handshake complete with%' AND $1 > 2
+
+# [WorkerReceiver[myid=1]:o.a.z.s.q.FastLeaderElection$Messenger$WorkerReceiver@391] - Notification: my state:FOLLOWING; n.sid:3, n.state:FOLLOWING, n.leader:2, n.round:0x270, n.peerEpoch:0x211, n.zxid:0x21000000006, message format version:0x2, n.config version:0x0
+;UPDATE all_logs SET log_comment =
+  'Broker ' || regexp_match('.*myid=(.*?)\].*', log_body) ||
+  ' in state ' || regexp_match('.*my state:(.*?);.*', log_body) ||
+  ' got election notification from broker ' || regexp_match('.*n.sid:(.*?), .*', log_body) ||
+  ' in state ' || regexp_match('.*n.state:(.*?),.*', log_body) ||
+  ' with current leader ' || regexp_match('.*n.leader:(.*?),.*', log_body) ||
+  ' - epoch: ' || regexp_match('.*n.peerEpoch:(.*?),.*', log_body) ||
+  ' and zxid: ' || regexp_match('.*n.zxid:(.*?),.*', log_body)
+WHERE
+  log_text LIKE '% - Notification: my state:%'
+
+# [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2282)(secure=disabled):o.a.z.s.q.FastLeaderElection@946] - New election. My id = 1, proposed zxid=0x2110000012
+;UPDATE all_logs SET log_comment =
+  'Broker ' || regexp_match('.*myid=(.*?).*', log_body) ||
+  ' started election with proposed zxid:  ' || regexp_match('.*proposed zxid=(.*?);.*', log_body)
+WHERE
+  log_text LIKE '% - New election. My id %'
+
+# INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2282)(secure=disabled):o.a.z.s.q.Follower@77] - FOLLOWING - LEADER ELECTION TOOK - 51548 MS
+;UPDATE all_logs SET log_comment =
+  'Leader election done after ' || regexp_match('.*LEADER ELECTION TOOK - (.*)', log_body) ||
+  ' - Broker ' || regexp_match('.*myid=(.*?)\].*', log_body) ||
+  ' is now ' || regexp_match('.* - (.*?) - LEADER ELECTION TOOK.*', log_body)
+WHERE
+  log_text LIKE '% LEADER ELECTION TOOK - %'
+
+;SELECT log_time, log_comment from all_logs where log_comment != ''
+
+    :switch-to-view db
+
