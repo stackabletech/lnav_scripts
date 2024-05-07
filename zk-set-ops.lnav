@@ -5,7 +5,7 @@
 
 # Drop the table used to store election starts/finishes
 ;DROP TABLE IF EXISTS zk_elections
-    # Create a table of the lines where an election is started/finished.
+# Create a table of the lines where an election is started/finished.
 ;CREATE TABLE zk_elections AS
 SELECT log_line, log_body, log_path,
        CASE json_contains(log_tags, '#zk-election-started')
@@ -16,7 +16,7 @@ FROM zookeeper_log
 WHERE json_contains(log_tags, '#zk-election-started') OR json_contains(log_tags, '#zk-election-finished')
 ORDER BY log_line ASC
 
-    # Create a table of the start of an election and either the end
+# Create a table of the start of an election and either the end
 # or another start of an election.  We'll use these bounds to
 # assign opids to election-related log messages.
 ;DROP TABLE IF EXISTS zk_election_ops
