@@ -1,0 +1,53 @@
+{
+  "$schema": "https://lnav.org/schemas/format-v1.schema.json",
+  "github_events_log": {
+    "title": "Stackable Vector Json Format",
+    "description": "Parses the json formatted version of Logs that are gathered by Stackable and sent to the vector aggregator",
+    "url": "https://docs.stackable.tech/home/stable/concepts/logging/",
+    "file-type": "json",
+    "timestamp-field": "timestamp",
+    "body-field": "message",
+    "level-field": "level",
+    "line-format":[ { "field": "timestamp" }, " - ", { "field":  "level"}, " - " ,{ "field": "message" } ],
+    "value": {
+      "cluster": {
+        "kind": "string",
+        "identifier": true
+      },
+      "container": {
+        "kind": "string",
+        "identifier": true
+      },
+      "level": {
+        "kind": "string"
+      },
+      "logger": {
+        "kind": "string"
+      },
+      "message": {
+        "kind": "string"
+      },
+      "namespace": {
+        "kind": "string",
+        "hidden": true
+      },
+      "pod": {
+        "kind": "string"
+      },
+      "role": {
+        "kind": "string"
+      },
+      "roleGroup": {
+        "kind": "string"
+      },
+      "source_type": {
+        "kind": "string",
+        "identifier": true
+      },
+      "timestamp": {
+        "kind": "string",
+        "identifier": true
+      }
+    }
+  }
+}
