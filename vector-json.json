@@ -5,66 +5,44 @@
     "description": "Parses the json formatted version of Logs that are gathered by Stackable and sent to the vector aggregator",
     "url": "https://docs.stackable.tech/home/stable/concepts/logging/",
     "file-type": "json",
-    "ordered-by-time": false,
     "timestamp-field": "timestamp",
     "body-field": "message",
     "level-field": "level",
-    "line-format": [
-      {
-        "field": "timestamp"
-      },
-      " - ",
-      {
-        "field": "level"
-      },
-      " - ",
-      {
-        "field": "message"
-      }
-    ],
+    "line-format":[ { "field": "timestamp" }, " - ", { "field":  "level"}, " - " ,{ "field": "message" } ],
     "value": {
       "cluster": {
         "kind": "string",
-        "identifier": true,
-        "hidden": true
+        "identifier": true
       },
       "container": {
         "kind": "string",
-        "identifier": true,
-        "hidden": true
+        "identifier": true
       },
       "level": {
-        "kind": "string",
-        "hidden": true
+        "kind": "string"
       },
       "logger": {
-        "kind": "string",
-        "hidden": true
+        "kind": "string"
       },
       "message": {
-        "kind": "string",
-        "hidden": true
+        "kind": "string"
       },
       "namespace": {
         "kind": "string",
         "hidden": true
       },
       "pod": {
-        "kind": "string",
-        "hidden": true
+        "kind": "string"
       },
       "role": {
-        "kind": "string",
-        "hidden": true
+        "kind": "string"
       },
       "roleGroup": {
-        "kind": "string",
-        "hidden": true
+        "kind": "string"
       },
       "source_type": {
         "kind": "string",
-        "identifier": true,
-        "hidden": true
+        "identifier": true
       },
       "timestamp": {
         "kind": "string",
