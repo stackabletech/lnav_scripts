@@ -9,7 +9,7 @@
     "body-field": "message",
     "level-field": "level",
     "timestamp-format": ["%Y-%m-%dT%H:%M:%S.%N%z" ],
-    "line-format":[ { "field": "timestamp" }, " - ", { "field":  "level"}, " - " ,{ "field": "message" } ],
+    "line-format":[ {"field": "role"}, ": " ,{ "field": "timestamp" }, " - ", { "field":  "level"}, " - " ,{ "field": "message" } ],
     "hide-extra": true,
     "value": {
       "cluster": {
@@ -41,10 +41,14 @@
         "hidden": true
       },
       "role": {
-        "kind": "string"
+        "kind": "string",
+        "identifier": true,
+        "hidden": true
       },
       "roleGroup": {
-        "kind": "string"
+        "kind": "string",
+        "identifier": true,
+        "hidden": true
       },
       "source_type": {
         "kind": "string",
@@ -56,6 +60,10 @@
       },
       "vector": {
         "kind": "json",
+        "hidden": true
+      },
+      "source_type": {
+        "kind": "string",
         "hidden": true
       }
     }
