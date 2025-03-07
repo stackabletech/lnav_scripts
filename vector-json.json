@@ -17,6 +17,11 @@
         "identifier": true,
         "hidden": true
       },
+      "file": {
+        "kind": "string",
+        "identifier": true,
+        "hidden": true
+      },
       "container": {
         "kind": "string",
         "identifier": true,
