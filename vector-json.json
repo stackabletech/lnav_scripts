@@ -10,6 +10,7 @@
     "level-field": "level",
     "timestamp-format": ["%Y-%m-%dT%H:%M:%S.%N%z" ],
     "line-format":[ { "field": "timestamp" }, " - ", { "field":  "level"}, " - " ,{ "field": "message" } ],
+    "hide-extra": true,
     "value": {
       "cluster": {
         "kind": "string",
@@ -18,13 +19,15 @@
       },
       "container": {
         "kind": "string",
-        "identifier": true
+        "identifier": true,
+        "hidden": true
       },
       "level": {
         "kind": "string"
       },
       "logger": {
-        "kind": "string"
+        "kind": "string",
+        "hidden": true
       },
       "message": {
         "kind": "string"
@@ -34,7 +37,8 @@
         "hidden": true
       },
       "pod": {
-        "kind": "string"
+        "kind": "string",
+        "hidden": true
       },
       "role": {
         "kind": "string"
@@ -49,6 +53,10 @@
       "timestamp": {
         "kind": "string",
         "identifier": true
+      },
+      "vector": {
+        "kind": "json",
+        "hidden": true
       }
     }
   }
