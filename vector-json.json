@@ -63,10 +63,6 @@
       },
       "timestamp": {
         "kind": "string"
-      },
-      "vector": {
-        "kind": "json",
-        "hidden": true
       }
     }
   }
