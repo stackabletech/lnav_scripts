@@ -58,17 +58,14 @@
       },
       "source_type": {
         "kind": "string",
-        "identifier": true
+        "identifier": true,
+        "hidden": true
       },
       "timestamp": {
         "kind": "string"
       },
       "vector": {
         "kind": "json",
-        "hidden": true
-      },
-      "source_type": {
-        "kind": "string",
         "hidden": true
       }
     }
