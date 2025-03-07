@@ -23,7 +23,8 @@
         "hidden": true
       },
       "level": {
-        "kind": "string"
+        "kind": "string",
+        "identifier": true
       },
       "logger": {
         "kind": "string",
@@ -38,12 +39,12 @@
       },
       "pod": {
         "kind": "string",
-        "hidden": true
+        "hidden": true,
+        "identifier": true
       },
       "role": {
         "kind": "string",
-        "identifier": true,
-        "hidden": true
+        "identifier": true
       },
       "roleGroup": {
         "kind": "string",
@@ -55,8 +56,7 @@
         "identifier": true
       },
       "timestamp": {
-        "kind": "string",
-        "identifier": true
+        "kind": "string"
       },
       "vector": {
         "kind": "json",
