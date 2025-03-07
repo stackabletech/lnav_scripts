@@ -8,6 +8,7 @@
     "timestamp-field": "timestamp",
     "body-field": "message",
     "level-field": "level",
+    "timestamp-format": ["%Y-%m-%dT%H:%M:%S.%N%z" ],
     "line-format":[ { "field": "timestamp" }, " - ", { "field":  "level"}, " - " ,{ "field": "message" } ],
     "value": {
       "cluster": {
