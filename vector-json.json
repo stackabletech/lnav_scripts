@@ -13,7 +13,8 @@
     "value": {
       "cluster": {
         "kind": "string",
-        "identifier": true
+        "identifier": true,
+        "hidden": true
       },
       "container": {
         "kind": "string",
