@@ -1,0 +1,67 @@
+{
+  "$schema": "https://lnav.org/schemas/config-v1.schema.json",
+  "tuning": {
+    "url-scheme": {
+      "stackable": {
+        "handler": "stackable-url-handler"
+      }
+    }
+  }
+}
+
+
+{"cluster":"hdfs","container":"containerdebug","file":"containerdebug.2025-03-11-12.tracing-rs.json","level":"INFO","logger":"containerdebug::system_information","message":"Starting data collection","namespace":"default","pod":"hdfs-journalnode-default-0","role":"journalnode","roleGroup":"default","source_type":"vector","timestamp":"2025-03-11T12:40:38.583515Z"}
+
+
+"cluster": {
+"kind": "string",
+"identifier": true,
+"hidden": true
+},
+"container": {
+"kind": "string",
+"identifier": true,
+"hidden": true
+},
+"file": {
+"kind": "string",
+"identifier": true,
+"hidden": true
+},
+"level": {
+"kind": "string",
+"identifier": true
+},
+"logger": {
+"kind": "string",
+"hidden": true
+},
+"message": {
+"kind": "string"
+},
+"namespace": {
+"kind": "string",
+"hidden": true
+},
+"pod": {
+"kind": "string",
+"hidden": true,
+"identifier": true
+},
+"role": {
+"kind": "string",
+"identifier": true
+},
+"roleGroup": {
+"kind": "string",
+"identifier": true,
+"hidden": true
+},
+"source_type": {
+"kind": "string",
+"identifier": true,
+"hidden": true
+},
+"timestamp": {
+"kind": "string"
+}
