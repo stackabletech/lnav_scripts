@@ -7,10 +7,8 @@ CREATE TRIGGER IF NOT EXISTS add_vector_specific_filters
     jget(NEW.content, '/format') = 'vector_json' AND
     -- Don't create the filter if it's already there
     NOT EXISTS (
-SELECT 1 FROM lnav_view_filters WHERE pattern = 'noisy message')
+SELECT 1 FROM lnav_view_filters WHERE pattern = ":container != 'containerdebug'")
 BEGIN
 INSERT INTO lnav_view_filters (view_name, enabled, type, language, pattern) VALUES
     ('log', 1, 'OUT', 'sql', ":container != 'containerdebug'");
-INSERT INTO lnav_view_filters (view_name, enabled, type, language, pattern) VALUES
-    ('log', 0, 'IN', 'sql', ":level == 'ERROR'");
 END;
