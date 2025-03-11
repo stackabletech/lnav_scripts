@@ -8,8 +8,8 @@
     "timestamp-field": "timestamp",
     "body-field": "message",
     "level-field": "level",
-    "timestamp-format": ["%Y-%m-%dT%H:%M:%S.%N%z" ],
-    "line-format":[ {"field": "role"}, ": " ,{ "field": "timestamp" }, " - ", { "field":  "level"}, " - " ,{ "field": "message" } ],
+    "timestamp-format": ["%Y-%m-%dT%H:%M:%S.%N%z", "%Y-%m-%dT%H:%M:%S.%f%z", "%Y-%m-%dT%H:%M:%S.%L%z" ],
+    "line-format":[{"field": "role"}, "/" , {"field": "pod"}, ": " ,{ "field": "timestamp" }, " - ", { "field":  "level"}, " - " ,{ "field": "message" } ],
     "hide-extra": true,
     "value": {
       "cluster": {
@@ -17,12 +17,12 @@
         "identifier": true,
         "hidden": true
       },
-      "file": {
+      "container": {
         "kind": "string",
         "identifier": true,
         "hidden": true
       },
-      "container": {
+      "file": {
         "kind": "string",
         "identifier": true,
         "hidden": true
