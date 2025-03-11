@@ -11,4 +11,6 @@ SELECT 1 FROM lnav_view_filters WHERE pattern = 'noisy message')
 BEGIN
 INSERT INTO lnav_view_filters (view_name, enabled, type, language, pattern) VALUES
     ('log', 1, 'OUT', 'sql', ":container != 'containerdebug'");
+INSERT INTO lnav_view_filters (view_name, enabled, type, language, pattern) VALUES
+    ('log', 0, 'IN', 'sql', ":level == 'ERROR'");
 END;
