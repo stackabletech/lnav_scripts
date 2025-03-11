@@ -1,6 +1,6 @@
 {
   "$schema": "https://lnav.org/schemas/format-v1.schema.json",
-  "github_events_log": {
+  "vector_json": {
     "title": "Stackable Vector Json Format",
     "description": "Parses the json formatted version of Logs that are gathered by Stackable and sent to the vector aggregator",
     "url": "https://docs.stackable.tech/home/stable/concepts/logging/",
