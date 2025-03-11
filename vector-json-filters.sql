@@ -10,5 +10,5 @@ CREATE TRIGGER IF NOT EXISTS add_vector_specific_filters
 SELECT 1 FROM lnav_view_filters WHERE pattern = 'noisy message')
 BEGIN
 INSERT INTO lnav_view_filters (view_name, enabled, type, pattern) VALUES
-    ('log', 1, 'OUT', ':container != \'containerdebug\'');
+    ('log', 1, 'OUT', ":container != 'containerdebug'");
 END;
