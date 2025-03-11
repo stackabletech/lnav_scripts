@@ -1,0 +1,1 @@
+:filter-expr :container != 'containerdebug'
