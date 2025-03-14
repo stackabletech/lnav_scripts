@@ -1,0 +1,43 @@
+{
+  "$schema": "https://lnav.org/schemas/format-v1.schema.json",
+  "vector_json": {
+    "title": "Graylog Export",
+    "description": "Parses the json formatted version of logs as exported from Graylog",
+    "url": "https://docs.stackable.tech/home/stable/concepts/logging/",
+    "file-type": "json",
+    "timestamp-field": "timestamp",
+    "body-field": "message",
+    "ordered-by-time": false,
+    "timestamp-format": ["%Y-%m-%dT%H:%M:%S.%N%z", "%Y-%m-%dT%H:%M:%S.%f%z", "%Y-%m-%dT%H:%M:%S.%L%z" ],
+    "line-format":[{"field": "kubernetes_host"}, "/" , {"field": "kubernetes_pod_ip"}, "/", {"field": "kubernetes_pod_name"}, ": " ,{ "field": "timestamp" }, " - ", { "field": "message" } ],
+    "hide-extra": true,
+    "value": {
+      "kubernetes_pod_ip": {
+        "kind": "string",
+        "identifier": true,
+        "hidden": true
+      },
+      "source": {
+        "kind": "string",
+        "identifier": true,
+        "hidden": true
+      },
+      "message": {
+        "kind": "string"
+      },
+      "kubernetes_host": {
+        "kind": "string",
+        "identifier": true,
+        "hidden": true
+      },
+      "kubernetes_pod_name": {
+        "kind": "string",
+        "identifier": true
+      },
+      "timestamp": {
+        "kind": "string",
+        "identifier": true
+      }
+    }
+  }
+}
