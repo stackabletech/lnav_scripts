@@ -1,6 +1,6 @@
 {
   "$schema": "https://lnav.org/schemas/format-v1.schema.json",
-  "vector_json": {
+  "graylog_json": {
     "title": "Graylog Export",
     "description": "Parses the json formatted version of logs as exported from Graylog",
     "url": "https://docs.stackable.tech/home/stable/concepts/logging/",
