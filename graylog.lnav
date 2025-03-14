@@ -1,0 +1,8 @@
+;select
+     log_level,
+     lower(regexp_match('^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2},\d+(?:\s+\[myid:\]\s+-)?\s+([A-Z]+)\s+.*', log_body)) as parsed_level
+ from graylog_json
+ where log_level != parsed_level;
+
+
+;update all_logs set timestamp = regexp_match('^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2},\d+(?:\s+\[myid:\]\s+-)?\s+([A-Z]+)\s+.*', log_body)
