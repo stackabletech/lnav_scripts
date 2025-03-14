@@ -1,7 +1,7 @@
 {
   "$schema": "https://lnav.org/schemas/format-v1.schema.json",
   "graylog_json_extended": {
-    "title": "Graylog Export",
+    "title": "Graylog Export with extracted timestamp and log level",
     "description": "Parses the json formatted version of logs as exported from Graylog",
     "url": "https://docs.stackable.tech/home/stable/concepts/logging/",
     "file-type": "json",
