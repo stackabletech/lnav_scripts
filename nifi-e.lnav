@@ -1,0 +1,9 @@
+#
+# @synopsis: nifi-tools-cust-e
+# @description: A more or less random collection of NiFi tools that should work with logs as written by customer e-s NiFi instances
+#
+
+# Create a search table to show how long garbage collections took
+# Example query:
+#   select log_time,generation,duration from gctime order by duration desc
+create-search-table gctime \[GC pause \(G1 Evacuation Pause\) \((?<generation>.*)\), (?<duration>[0-9\.]+) secs]
