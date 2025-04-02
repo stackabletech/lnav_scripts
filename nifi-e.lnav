@@ -4,6 +4,10 @@
 #
 
 # Create a search table to show how long garbage collections took
-# Example query:
+# Example queries:
+#   Show longest gc durations
 #   select log_time,generation,duration from gctime order by duration desc
+#
+#   Show avg gc duration per minute, as well as max and min
+#   select strftime('%H:%M', log_time) as minute, avg(duration), min(duration), max(duration) from gctime group by minute
 create-search-table gctime \[GC pause \(G1 Evacuation Pause\) \((?<generation>.*)\), (?<duration>[0-9\.]+) secs]
