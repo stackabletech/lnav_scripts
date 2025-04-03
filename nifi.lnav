@@ -1,0 +1,73 @@
+#
+# @synopsis: nifi-tools
+# @description: A more or less random collection of NiFi tools that should work with logs as written by NiFi
+#   This was tested with NiFi 1.18.0 - later versions may differ
+#
+
+##
+# Create a search table to show how long garbage collections took
+# The log contains blocks like this
+# [GC pause (G1 Evacuation Pause) (young), 0.0260231 secs]
+#    [Parallel Time: 14.3 ms, GC Workers: 8]
+#       [GC Worker Start (ms): Min: 1903446.9, Avg: 1903447.0, Max: 1903447.2, Diff: 0.2]
+#       [Ext Root Scanning (ms): Min: 1.6, Avg: 2.4, Max: 5.2, Diff: 3.6, Sum: 19.4]
+#       [Update RS (ms): Min: 0.0, Avg: 2.1, Max: 3.1, Diff: 3.1, Sum: 16.4]
+#         [Processed Buffers: Min: 0, Avg: 26.0, Max: 74, Diff: 74, Sum: 208]
+#         [Scan RS (ms): Min: 0.3, Avg: 0.6, Max: 0.8, Diff: 0.4, Sum: 4.6]
+#         [Code Root Scanning (ms): Min: 0.0, Avg: 0.3, Max: 0.7, Diff: 0.7, Sum: 2.6]
+#         [Object Copy (ms): Min: 8.2, Avg: 8.5, Max: 8.9, Diff: 0.7, Sum: 68.0]
+#         [Termination (ms): Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0]
+#            [Termination Attempts: Min: 1, Avg: 1.0, Max: 1, Diff: 0, Sum: 8]
+#         [GC Worker Other (ms): Min: 0.0, Avg: 0.2, Max: 0.3, Diff: 0.2, Sum: 1.2]
+#         [GC Worker Total (ms): Min: 13.8, Avg: 14.0, Max: 14.2, Diff: 0.4, Sum: 112.1]
+#         [GC Worker End (ms): Min: 1903460.9, Avg: 1903461.0, Max: 1903461.2, Diff: 0.2]
+#    [Code Root Fixup: 0.1 ms]
+#    [Code Root Purge: 0.0 ms]
+#    [String Dedup Fixup: 3.1 ms, GC Workers: 8]
+#       [Queue Fixup (ms): Min: 0.0, Avg: 0.0, Max: 0.0, Diff: 0.0, Sum: 0.0]
+#       [Table Fixup (ms): Min: 2.6, Avg: 2.8, Max: 2.9, Diff: 0.3, Sum: 22.5]
+#    [Clear CT: 2.5 ms]
+#    [Other: 6.0 ms]
+#       [Choose CSet: 0.0 ms]
+#       [Ref Proc: 2.2 ms]
+#       [Ref Enq: 0.0 ms]
+#       [Redirty Cards: 0.6 ms]
+#       [Humongous Register: 0.1 ms]
+#       [Humongous Reclaim: 0.0 ms]
+#       [Free CSet: 2.5 ms]
+#    [Eden: 17152.0M(17152.0M)->0.0B(17128.0M) Survivors: 49152.0K->73728.0K Heap: 17671.3M(24576.0M)->539.8M(24576.0M)]
+#  [Times: user=0.16 sys=0.00, real=0.03 secs]
+# [GC concurrent-string-deduplication, 18864.0B->7360.0B(11504.0B), avg 43.5%, 0.0002141 secs]
+
+create-search-table gctime \[GC pause \(G1 Evacuation Pause\) \((?<generation>.*)\), (?<duration>[0-9\.]+) secs]
+
+# Example queries:
+#   Show longest gc durations
+#   select log_time,generation,duration from gctime order by duration desc
+#
+#   Show avg gc duration per minute, as well as max and min (to see times where long durations occur add `order by duration desc`)
+#   select strftime('%H:%M', log_time) as minute, avg(duration) as duration, min(duration), max(duration) from gctime group by minute
+#
+
+
+
+# === Evaluate processing time for requests
+# 2025-04-02 16:02:12,475 INFO [Process Cluster Protocol Request-26] o.a.n.c.p.impl.SocketProtocolListener Finished processing request d91cc51d-3b8f-4b2c-9c34-b0315d6294b8 (type=HEARTBEAT, length=7125 bytes) from shared2-1.shared2-headless.prod-shared-2.svc.cluster.local:8443 in 104 millis
+# 2025-04-02 16:02:18,013 INFO [Process Cluster Protocol Request-34] o.a.n.c.p.impl.SocketProtocolListener Finished processing request 9c143036-ad10-4876-81e3-ae241fda9c73 (type=NODE_STATUS_CHANGE, length=1493 bytes) from shared2-3.shared2-headless.prod-shared-2.svc.cluster.local in 107 millis
+# 2025-04-02 16:02:18,015 INFO [Process Cluster Protocol Request-32] o.a.n.c.p.impl.SocketProtocolListener Finished processing request b64cbe55-31e2-44ec-933f-0c613081fcbf (type=NODE_STATUS_CHANGE, length=1493 bytes) from shared2-3.shared2-headless.prod-shared-2.svc.cluster.local in 108 millis
+# 2025-04-02 16:02:21,087 INFO [Process Cluster Protocol Request-33] o.a.n.c.p.impl.SocketProtocolListener Finished processing request 03510548-b2ba-4154-afbf-f63045bdb748 (type=HEARTBEAT, length=7027 bytes) from shared2-2.shared2-headless.prod-shared-2.svc.cluster.local:8443 in 104 millis
+# 2025-04-02 16:02:30,925 INFO [Process Cluster Protocol Request-35] o.a.n.c.p.impl.SocketProtocolListener Finished processing request 5f2be804-ae95-44fe-86ee-08b4f73edf36 (type=NODE_STATUS_CHANGE, length=1554 bytes) from shared2-3.shared2-headless.prod-shared-2.svc.cluster.local in 104 millis
+
+create-search-table requests Finished processing request\s+(?<id>\S+)\s+\(type=(?<type>[^,]+),\s+length=(?<length>\d+)\s+(?<lengthunit>\S+)\)\s+from\s+(?<sender>\S+)\s+in\s+(?<duration>\d+)\s+(?<duration_unit>.*)
+
+# Check if any request type takes especially long
+# select type, avg(duration), max(duration) from requests group by type
+#
+# Check if there are any times at which processing generally takes longer
+# select strftime('%H:%M', log_time) as minute, avg(duration) as duration from requests group by minute order by duration desc, minute asc
+
+
+
+
+
+
