@@ -68,6 +68,25 @@
 
 
 
+# === Look for failed requests and the reason
+# Loglines:
+   2025-04-02 12:01:13,019 WARN [Replicate Request Thread-308065] o.a.n.c.c.h.r.ThreadPoolRequestReplicator Failed to replicate request GET /nifi-api/flow/process-groups/6e1b7309-018e-1000-0000-00006ad5efcf to shared2-2.shared2-headless.prod-shared-2.svc.cluster.local:8443 due to java.net.SocketTimeoutException: timeout
+
+:create-search-table failedrequests Failed to replicate request (?<method>\S+)\s+(?<url>\S+) to (?<targetnode>[^\.]+).shared2-headless.prod-shared-2.svc.cluster.local:8443 due to (?<failurereason>.*)
+
+# === Analyze duration of wal checkpoints
+# Loglines:
+#  2025-04-02 12:04:24,536 INFO [pool-10-thread-1] o.a.n.wali.SequentialAccessWriteAheadLog Checkpointed Write-Ahead Log with 1114 Records and 0 Swap Files in 1334 milliseconds (Stop-the-world time = 75 milliseconds), max Transaction ID 501769510
+
+:create-search-table walcheckpoints Checkpointed Write-Ahead Log with (?<records>\d+) Records and (?<swapfiles>\d+) Swap Files in (?<duration>\d+) milliseconds \(Stop-the-world time = (?<stwduration>\d+) milliseconds\), max Transaction ID (?<maxtransactionid>\d+)
 
 
+# === Analyze changes in cluster status
+# Loglines:
+# 2025-04-02 12:04:26,979 INFO [Heartbeat Monitor Thread-1] o.a.n.c.c.node.NodeClusterCoordinator Status of shared2-0.shared2-headless.prod-shared-2.svc.cluster.local:8443 changed from NodeConnectionStatus[nodeId=shared2-0.shared2-headless.prod-shared-2.svc.cluster.local:8443, state=DISCONNECTED, Disconnect Code=Lack of Heartbeat, Disconnect Reason=Have not received a heartbeat from node in 43 seconds, updateId=1842] to NodeConnectionStatus[nodeId=shared2-0.shared2-headless.prod-shared-2.svc.cluster.local:8443, state=CONNECTING, updateId=1843]
+# 2025-04-02 12:04:27,087 INFO [Process Cluster Protocol Request-24] o.a.n.c.c.node.NodeClusterCoordinator Status of shared2-0.shared2-headless.prod-shared-2.svc.cluster.local:8443 changed from NodeConnectionStatus[nodeId=shared2-0.shared2-headless.prod-shared-2.svc.cluster.local:8443, state=DISCONNECTED, Disconnect Code=Lack of Heartbeat, Disconnect Reason=Have not received a heartbeat from node in 43 seconds, updateId=1842] to NodeConnectionStatus[nodeId=shared2-0.shared2-headless.prod-shared-2.svc.cluster.local:8443, state=CONNECTING, updateId=1843]
+# 2025-04-02 12:04:27,089 INFO [Process Cluster Protocol Request-47] o.a.n.c.c.node.NodeClusterCoordinator Status of shared2-0.shared2-headless.prod-shared-2.svc.cluster.local:8443 changed from NodeConnectionStatus[nodeId=shared2-0.shared2-headless.prod-shared-2.svc.cluster.local:8443, state=DISCONNECTED, Disconnect Code=Lack of Heartbeat, Disconnect Reason=Have not received a heartbeat from node in 43 seconds, updateId=1842] to NodeConnectionStatus[nodeId=shared2-0.shared2-headless.prod-shared-2.svc.cluster.local:8443, state=CONNECTING, updateId=1843]
+# 2025-04-02 12:04:51,820 INFO [Process Cluster Protocol Request-40] o.a.n.c.c.node.NodeClusterCoordinator Status of shared2-0.shared2-headless.prod-shared-2.svc.cluster.local:8443 changed from NodeConnectionStatus[nodeId=shared2-0.shared2-headless.prod-shared-2.svc.cluster.local:8443, state=CONNECTING, updateId=1843] to NodeConnectionStatus[nodeId=shared2-0.shared2-headless.prod-shared-2.svc.cluster.local:8443, state=CONNECTED, updateId=1844]
+# 2025-04-02 12:30:05,231 INFO [Process Cluster Protocol Request-7] o.a.n.c.c.node.NodeClusterCoordinator Status of shared2-0.shared2-headless.prod-shared-2.svc.cluster.local:8443 changed from NodeConnectionStatus[nodeId=shared2-0.shared2-headless.prod-shared-2.svc.cluster.local:8443, state=DISCONNECTED, Disconnect Code=Lack of Heartbeat, Disconnect Reason=Have not received a heartbeat from node in 43 seconds, updateId=1848] to NodeConnectionStatus[nodeId=shared2-0.shared2-headless.prod-shared-2.svc.cluster.local:8443, state=CONNECTING, updateId=1849]
 
+:create-search-table status Status of (?<node>[^\.]+).shared2-headless.prod-shared-2.svc.cluster.local:8443 changed from NodeConnectionStatus\[nodeId=(?<oldnode>[^\.]+).shared2-headless.prod-shared-2.svc.cluster.local:8443, state=(?<oldstate>[^,]+), updateId=(?<updateid>\d+)\] to NodeConnectionStatus\[nodeId=(?<newnode>[^\.]+).shared2-headless.prod-shared-2.svc.cluster.local:8443, state=(?<newstate>[^,]+), (?<rest>.*)
