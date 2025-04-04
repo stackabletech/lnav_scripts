@@ -39,7 +39,7 @@
 #  [Times: user=0.16 sys=0.00, real=0.03 secs]
 # [GC concurrent-string-deduplication, 18864.0B->7360.0B(11504.0B), avg 43.5%, 0.0002141 secs]
 
-create-search-table gctime \[GC pause \(G1 Evacuation Pause\) \((?<generation>.*)\), (?<duration>[0-9\.]+) secs]
+:create-search-table gctime \[GC pause \(G1 Evacuation Pause\) \((?<generation>.*)\), (?<duration>[0-9\.]+) secs]
 
 # Example queries:
 #   Show longest gc durations
@@ -58,7 +58,7 @@ create-search-table gctime \[GC pause \(G1 Evacuation Pause\) \((?<generation>.*
 # 2025-04-02 16:02:21,087 INFO [Process Cluster Protocol Request-33] o.a.n.c.p.impl.SocketProtocolListener Finished processing request 03510548-b2ba-4154-afbf-f63045bdb748 (type=HEARTBEAT, length=7027 bytes) from shared2-2.shared2-headless.prod-shared-2.svc.cluster.local:8443 in 104 millis
 # 2025-04-02 16:02:30,925 INFO [Process Cluster Protocol Request-35] o.a.n.c.p.impl.SocketProtocolListener Finished processing request 5f2be804-ae95-44fe-86ee-08b4f73edf36 (type=NODE_STATUS_CHANGE, length=1554 bytes) from shared2-3.shared2-headless.prod-shared-2.svc.cluster.local in 104 millis
 
-create-search-table requests Finished processing request\s+(?<id>\S+)\s+\(type=(?<type>[^,]+),\s+length=(?<length>\d+)\s+(?<lengthunit>\S+)\)\s+from\s+(?<sender>\S+)\s+in\s+(?<duration>\d+)\s+(?<duration_unit>.*)
+:create-search-table requests Finished processing request\s+(?<id>\S+)\s+\(type=(?<type>[^,]+),\s+length=(?<length>\d+)\s+(?<lengthunit>\S+)\)\s+from\s+(?<sender>\S+)\s+in\s+(?<duration>\d+)\s+(?<duration_unit>.*)
 
 # Check if any request type takes especially long
 # select type, avg(duration), max(duration) from requests group by type
