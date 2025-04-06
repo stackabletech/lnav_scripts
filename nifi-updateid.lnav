@@ -1,0 +1,50 @@
+# Create a search table extracting all lines showing an updateId
+:create-search-table updates .*updateID=(?<updateid>\d+)
+
+# Create a table containing all updateids and the first log_line that they were seen in
+;create table idlowmark
+as
+select log_path,
+       min(log_line) as updateidstart,
+       updateId
+from updates
+group by
+    log_path, updateid
+order by
+    log_path, updateid
+
+    # Extend the table above by joining it with itself and finding the line where the next larger updateid starts
+# This effectively gives us the first and last line that we saw an updateid on
+;create table idranges as
+select
+    updateid,
+    updateidstart as lowmark,
+    (
+        select updateidstart
+        from idlowmark as idend
+        where
+            idend.log_path = log_path and
+            idend.updateid > idlowmark.updateid
+        order by updateid limit 1)
+            as highmark,
+        log_path
+    from idlowmark
+
+# Update the opid which is used for the timeline view for the lines marking the beginning and end of
+                                       # all updateids
+;UPDATE all_logs
+SET log_opid = idranges.updateid
+    FROM (SELECT * FROM idranges) AS idranges
+WHERE
+    all_logs.log_path = idranges.log_path AND
+    all_logs.log_line IN (idranges.lowmark, idranges.highmark)
+
+# Mark all lines between the beginning and start that we consider as relevant for cluster state with the same opid
+;UPDATE all_logs
+SET log_opid = idranges.updateid
+    FROM (SELECT * FROM idranges) AS idranges
+WHERE
+    all_logs.log_path = idranges.log_path AND
+    all_logs.log_line BETWEEN idranges.lowmark AND idranges.highmark AND
+    (all_logs.log_body LIKE '%o.a.n.c.c.ClusterProtocolHeartbeater%' OR
+    all_logs.log_body LIKE 'o.a.n.c.c.node.NodeClusterCoordinator' )

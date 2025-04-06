@@ -90,3 +90,10 @@
 # 2025-04-02 12:30:05,231 INFO [Process Cluster Protocol Request-7] o.a.n.c.c.node.NodeClusterCoordinator Status of shared2-0.shared2-headless.prod-shared-2.svc.cluster.local:8443 changed from NodeConnectionStatus[nodeId=shared2-0.shared2-headless.prod-shared-2.svc.cluster.local:8443, state=DISCONNECTED, Disconnect Code=Lack of Heartbeat, Disconnect Reason=Have not received a heartbeat from node in 43 seconds, updateId=1848] to NodeConnectionStatus[nodeId=shared2-0.shared2-headless.prod-shared-2.svc.cluster.local:8443, state=CONNECTING, updateId=1849]
 
 :create-search-table status Status of (?<node>[^\.]+).shared2-headless.prod-shared-2.svc.cluster.local:8443 changed from NodeConnectionStatus\[nodeId=(?<oldnode>[^\.]+).shared2-headless.prod-shared-2.svc.cluster.local:8443, state=(?<oldstate>[^,]+), updateId=(?<updateid>\d+)\] to NodeConnectionStatus\[nodeId=(?<newnode>[^\.]+).shared2-headless.prod-shared-2.svc.cluster.local:8443, state=(?<newstate>[^,]+), (?<rest>.*)
+
+
+:create-search-table commfailed Failed to communicate over Channel \/(?<srcip>[^\:]+)\:\d+::(?<dsthost>[^\/]*)?\/(?<dstip>[^\:]+)\:(?<dstport>\d+)(?<error>.*)
+
+create table brokenchannel as select strftime('%H:%M', log_time) as minute, srcip,dstip, count(srcip) from commfailed group by minute, srcip, dstip
+create table disconnects as select strftime('%H:%M', log_time) as minute, updateid from status where newstate = "DISCONNECTED" group by minute, 'updateId'
+select d.minute, b.minute, b.srcip, b.dstip,d.updateid from brokenchannel b, disconnects d where b.minute = d.minute
