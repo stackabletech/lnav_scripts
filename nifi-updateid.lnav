@@ -19,7 +19,7 @@ group by
 order by
     log_path, updateid
 
-    # Extend the table above by joining it with itself and finding the line where the next larger updateid starts
+# Extend the table above by joining it with itself and finding the line where the next larger updateid starts
 # This effectively gives us the first and last line that we saw an updateid on
 ;create table idranges as
 select
@@ -37,7 +37,7 @@ select
     from idlowmark
 
 # Update the opid which is used for the timeline view for the lines marking the beginning and end of
-                                       # all updateids
+# all updateids
 ;UPDATE all_logs
 SET log_opid = idranges.updateid
     FROM (SELECT * FROM idranges) AS idranges
