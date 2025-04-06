@@ -1,3 +1,9 @@
+#
+# @synopsis: nifi-updateid
+# @description: Extracts the nifi updateid and sets it as opid for visualization
+#   This was tested with NiFi 1.18.0 - later versions may differ
+#
+
 # Create a search table extracting all lines showing an updateId
 :create-search-table updates .*updateID=(?<updateid>\d+)
 
