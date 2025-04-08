@@ -94,6 +94,6 @@
 
 :create-search-table commfailed Failed to communicate over Channel \/(?<srcip>[^\:]+)\:\d+::(?<dsthost>[^\/]*)?\/(?<dstip>[^\:]+)\:(?<dstport>\d+)(?<error>.*)
 
-create table brokenchannel as select strftime('%H:%M', log_time) as minute, srcip,dstip, count(srcip) from commfailed group by minute, srcip, dstip
-create table disconnects as select strftime('%H:%M', log_time) as minute, updateid from status where newstate = "DISCONNECTED" group by minute, 'updateId'
-select d.minute, b.minute, b.srcip, b.dstip,d.updateid from brokenchannel b, disconnects d where b.minute = d.minute
+;create table brokenchannel as select strftime('%H:%M', log_time) as minute, srcip,dstip, count(srcip) from commfailed group by minute, srcip, dstip
+;create table disconnects as select strftime('%H:%M', log_time) as minute, updateid from status where newstate = "DISCONNECTED" group by minute, 'updateId'
+# ;select d.minute, b.minute, b.srcip, b.dstip,d.updateid from brokenchannel b, disconnects d where b.minute = d.minute
